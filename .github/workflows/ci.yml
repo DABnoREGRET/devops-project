@@ -73,3 +73,21 @@ jobs:
           context: ./frontend
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/devops-frontend:latest
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd devops-project
+            git pull origin main
+            docker-compose pull
+            docker-compose up -d
