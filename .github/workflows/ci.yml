@@ -40,6 +40,9 @@ jobs:
           cd backend
           npm ci
 
+      - name: Initialize Database
+        run: PGPASSWORD=postgres psql -h localhost -U postgres -d tododb -f database/database.sql
+
       - name: Run Tests
         run: |
           cd backend
