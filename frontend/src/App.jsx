@@ -38,6 +38,30 @@ function App() {
     }
   };
 
+  const deleteTodo = async (id) => {
+    try {
+      await fetch(`${API_URL}/api/todos/${id}`, {
+        method: 'DELETE',
+      });
+      fetchTodos();
+    } catch (err) {
+      alert('Failed to delete todo');
+    }
+  };
+
+  const toggleTodo = async (todo) => {
+    try {
+      await fetch(`${API_URL}/api/todos/${todo.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ completed: !todo.completed })
+      });
+      fetchTodos();
+    } catch (err) {
+      alert('Failed to update todo');
+    }
+  };
+
   return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
       <h1>🚀 DevOps Todo App</h1>
@@ -62,10 +86,19 @@ function App() {
             border: '1px solid #ddd',
             marginBottom: '5px',
             display: 'flex',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            alignItems: 'center'
           }}>
-            <span>{todo.title}</span>
-            <small>{todo.completed ? '✅' : '⏳'}</small>
+            <span 
+              onClick={() => toggleTodo(todo)} 
+              style={{ cursor: 'pointer', textDecoration: todo.completed ? 'line-through' : 'none', flex: 1 }}>
+              {todo.completed ? '✅' : '⏳'} {todo.title}
+            </span>
+            <button 
+              onClick={() => deleteTodo(todo.id)} 
+              style={{ background: '#ff4d4f', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}>
+              Delete
+            </button>
           </li>
         ))}
       </ul>

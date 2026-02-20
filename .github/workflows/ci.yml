@@ -87,7 +87,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd devops-project
+            cd "E:\Coding_Training\COMP1682.2 - Spring 2026\devops-project"
             git pull origin main
-            docker-compose pull
-            docker-compose up -d
+            docker-compose up -d --build
