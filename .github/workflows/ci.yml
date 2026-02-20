@@ -97,5 +97,4 @@ jobs:
           echo "Host *.trycloudflare.com" > ~/.ssh/config
           echo "  ProxyCommand cloudflared access ssh --hostname %h" >> ~/.ssh/config
           echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-
-          ssh -i ~/.ssh/id_rsa $USERNAME@$HOST "powershell -Command \"cd 'E:\Coding_Training\COMP1682.2 - Spring 2026\devops-project'; git pull origin main; docker-compose up -d --build\""
+          ssh -i ~/.ssh/id_rsa $USERNAME@$HOST "cmd.exe /c \"cd /d E:\Coding_Training\COMP1682.2 - Spring 2026\devops-project && git pull origin main && echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} > .env && echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env && echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env && echo CF_TUNNEL_TOKEN=${{ secrets.CF_TUNNEL_TOKEN }} >> .env && docker-compose up -d --build\""

@@ -13,9 +13,9 @@ services:
     environment:
       - DB_HOST=postgres
       - DB_PORT=5432
-      - DB_NAME=tododb
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
+      - DB_NAME=${POSTGRES_DB}
+      - DB_USER=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
     depends_on:
       postgres:
         condition: service_healthy
@@ -28,9 +28,9 @@ services:
   postgres:
     image: postgres:15-alpine
     environment:
-      - POSTGRES_DB=tododb
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -44,15 +44,11 @@ services:
 
   cloudflared:
     image: cloudflare/cloudflared:latest
-    command: tunnel --no-autoupdate --url http://frontend:3000
-    depends_on:
-      - frontend
-
-  cloudflared-ssh:
-    image: cloudflare/cloudflared:latest
-    command: tunnel --no-autoupdate run --token eyJhIjoiMWJiOTU5NTc5NmFjODg2MThiNDA3YzFmNTU3YWQxOTUiLCJ0IjoiZjhhMWMyNzgtY2RkMy00YThiLTk0N2UtMTY2ZTVmOTFiNWZiIiwicyI6Ik5tSTRPRFExWWpVdE9XSmhOQzAwWmpNNExXSmtZVEl0WkRJeFlqSTRNbVJtTVRJMiJ9
+    command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN}
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      - frontend
 
 volumes:
   postgres_data:
