@@ -50,7 +50,7 @@ services:
 
   cloudflared-ssh:
     image: cloudflare/cloudflared:latest
-    command: tunnel --no-autoupdate --url tcp://host.docker.internal:22
+    command: tunnel --no-autoupdate run --token eyJhIjoiMWJiOTU5NTc5NmFjODg2MThiNDA3YzFmNTU3YWQxOTUiLCJ0IjoiZjhhMWMyNzgtY2RkMy00YThiLTk0N2UtMTY2ZTVmOTFiNWZiIiwicyI6Ik5tSTRPRFExWWpVdE9XSmhOQzAwWmpNNExXSmtZVEl0WkRJeFlqSTRNbVJtTVRJMiJ9
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
