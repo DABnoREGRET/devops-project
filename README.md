@@ -35,39 +35,39 @@ The codebase contains **intentional bugs** that you need to identify and fix:
 
 ### Task 1: Fix Backend Bugs (server.js)
 
-- [ ] Bug #1: Wrong default password
-- [ ] Bug #2: Missing validation for empty title
-- [ ] Bug #3: Missing DELETE endpoint
-- [ ] Bug #4: Missing PUT endpoint
-- [ ] Bug #5: Server starts in test mode
-- [ ] Bug #6: App not exported for tests
+- [x] Bug #1: Wrong default password
+- [x] Bug #2: Missing validation for empty title
+- [x] Bug #3: Missing DELETE endpoint
+- [x] Bug #4: Missing PUT endpoint
+- [x] Bug #5: Server starts in test mode
+- [x] Bug #6: App not exported for tests
 
 ### Task 2: Complete Dockerfiles
 
-- [ ] Complete `backend/Dockerfile` (multi-stage build)
-- [ ] Complete `frontend/Dockerfile` (multi-stage build)
-- [ ] Create `.dockerignore` files for both
+- [x] Complete `backend/Dockerfile` (multi-stage build)
+- [x] Complete `frontend/Dockerfile` (multi-stage build)
+- [x] Create `.dockerignore` files for both
 
 ### Task 3: Complete docker-compose.yml
 
-- [ ] Add proper environment variables
-- [ ] Add healthchecks for backend and postgres
-- [ ] Add volume mounts for database persistence
-- [ ] Mount init script for database
-- [ ] Configure service dependencies with health conditions
+- [x] Add proper environment variables
+- [x] Add healthchecks for backend and postgres
+- [x] Add volume mounts for database persistence
+- [x] Mount init script for database
+- [x] Configure service dependencies with health conditions
 
 ### Task 4: Create CI/CD Pipeline
 
-- [ ] Create `.github/workflows/ci.yml`
-- [ ] Configure build-and-test job with PostgreSQL service
-- [ ] Configure Docker build and push to Docker Hub
-- [ ] Configure deploy job with SSH
+- [x] Create `.github/workflows/ci.yml`
+- [x] Configure build-and-test job with PostgreSQL service
+- [x] Configure Docker build and push to Docker Hub
+- [x] Configure deploy job with SSH
 
 ### Task 5: GitHub Configuration
 
-- [ ] Setup branch protection for main
-- [ ] Add required secrets
-- [ ] Configure PR review requirements
+- [x] Setup branch protection for main
+- [x] Add required secrets
+- [x] Configure PR review requirements
 
 ## Testing Locally
 
@@ -90,3 +90,8 @@ npm test
 5. Get approval → Merge to main
 6. Show CD deploying automatically
 7. Verify live application updated
+
+## Hosting & Deployment
+
+This application relies on **Docker** and `docker-compose` to orchestrate its containers, ensuring a consistent and reproducible deployment environment.
+Additionally, it leverages **Cloudflare Tunnels (`cloudflared`)** to securely expose the locally hosted frontend to the internet as a public domain, without requiring any inbound open ports or complex network configurations.
