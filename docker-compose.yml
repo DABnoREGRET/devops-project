@@ -5,6 +5,10 @@ services:
       - "3000:3000"
     depends_on:
       - backend
+    deploy:
+      resources:
+        limits:
+          memory: 500M
 
   backend:
     build: ./backend
@@ -19,6 +23,10 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 500M
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/health"]
       interval: 10s
@@ -36,6 +44,10 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/database.sql:/docker-entrypoint-initdb.d/init.sql
+    deploy:
+      resources:
+        limits:
+          memory: 500M
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -49,6 +61,10 @@ services:
       - "host.docker.internal:host-gateway"
     depends_on:
       - frontend
+    deploy:
+      resources:
+        limits:
+          memory: 500M
 
 volumes:
   postgres_data:
