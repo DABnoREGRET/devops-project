@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
+import './App.css';
 
-// STUDENT FIX: This API_URL works for local development and production natively
 const API_URL = process.env.REACT_APP_API_URL || (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8080');
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchTodos();
@@ -18,6 +19,8 @@ function App() {
       setTodos(data);
     } catch (err) {
       console.error('Fetch error:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -33,7 +36,7 @@ function App() {
       setNewTodo('');
       fetchTodos();
     } catch (err) {
-      alert('Failed to add todo');
+      console.error('Failed to add todo:', err);
     }
   };
 
@@ -44,7 +47,7 @@ function App() {
       });
       fetchTodos();
     } catch (err) {
-      alert('Failed to delete todo');
+      console.error('Failed to delete todo:', err);
     }
   };
 
@@ -57,59 +60,85 @@ function App() {
       });
       fetchTodos();
     } catch (err) {
-      alert('Failed to update todo');
+      console.error('Failed to update todo:', err);
     }
   };
 
+  const completedCount = todos.filter(t => t.completed).length;
+  const pendingCount = todos.length - completedCount;
+
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
-      <h1>🚀 DevOps Todo App</h1>
-      <p>Demo: Watch UI update LIVE after CI/CD! ✨</p>
+    <div className="app-container">
+      <header>
+        <h1>🚀 DevOps Todo App</h1>
+        <p>Live CI/CD Pipeline Tracking ✨</p>
+      </header>
 
-      <div style={{ marginBottom: '20px' }}>
-        <input
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-          placeholder="Add new todo..."
-          style={{ padding: '10px', width: '70%', marginRight: '10px' }}
-        />
-        <button onClick={addTodo} style={{ padding: '10px 20px' }}>
-          Add Todo
-        </button>
-      </div>
+      <div className="card">
+        <div className="stats-grid">
+          <div className="stat-item">
+            <span className="stat-value">{todos.length}</span>
+            <span className="stat-label">Total Task</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-value" style={{ color: '#10b981' }}>{completedCount}</span>
+            <span className="stat-label">Completed</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-value" style={{ color: '#f59e0b' }}>{pendingCount}</span>
+            <span className="stat-label">Pending</span>
+          </div>
+        </div>
 
-      <ul style={{ listStyle: 'none', padding: 0 }}>
-        {todos.map(todo => (
-          <li key={todo.id} style={{
-            padding: '10px',
-            border: '1px solid #ddd',
-            marginBottom: '5px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
-            <span 
-              onClick={() => toggleTodo(todo)} 
-              style={{ cursor: 'pointer', textDecoration: todo.completed ? 'line-through' : 'none', flex: 1 }}>
-              {todo.completed ? '✅' : '⏳'} {todo.title}
-            </span>
-            <button 
-              onClick={() => deleteTodo(todo.id)} 
-              style={{ background: '#ff4d4f', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}>
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
+        <div className="input-group">
+          <input
+            type="text"
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && addTodo()}
+            placeholder="What needs to be done?"
+          />
+          <button className="btn-primary" onClick={addTodo}>
+            Add Task
+          </button>
+        </div>
 
-      <div style={{ marginTop: '30px', fontSize: '12px', color: '#666' }}>
-        <p><strong>STUDENT TODO:</strong></p>
-        <ul>
-          <li>Dockerfile (multi-stage)</li>
-          <li>Fix backend validation (broken test)</li>
-          <li>CI/CD pipeline</li>
-          <li>REPORT.md + Slides</li>
-        </ul>
+        {loading ? (
+          <p style={{ textAlign: 'center', color: '#64748b' }}>Loading tasks...</p>
+        ) : (
+          <ul className="todo-list">
+            {todos.map(todo => (
+              <li key={todo.id} className="todo-item">
+                <div className="todo-content" onClick={() => toggleTodo(todo)}>
+                  <span className="status-icon">
+                    {todo.completed ? '✅' : '⏳'}
+                  </span>
+                  <span className={`todo-text ${todo.completed ? 'completed' : ''}`}>
+                    {todo.title}
+                  </span>
+                </div>
+                <button 
+                  className="btn-delete" 
+                  onClick={() => deleteTodo(todo.id)}
+                  title="Delete task"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                  </svg>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        
+        {todos.length === 0 && !loading && (
+          <p style={{ textAlign: 'center', color: '#64748b', marginTop: '20px' }}>
+             No tasks yet. Add one above! 
+          </p>
+        )}
       </div>
     </div>
   );
