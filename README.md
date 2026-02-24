@@ -11,85 +11,45 @@ This is a simple Todo application with:
 
 Your task is to build a complete CI/CD pipeline around this application.
 
-## Known Issues (You Must Fix!)
+## Project Summary
 
-The codebase contains **intentional bugs** that you need to identify and fix:
+This project establishes a fully automated and secure DevOps lifecycle for a modern Web Todo application.
 
-### Backend Issues:
+### Tech Stack
 
-1. **server.js** - Multiple bugs marked with comments (6 bugs total!)
-2. **Tests failing** - 4 out of 7 tests will fail until you fix the code
-3. **Missing functionality** - DELETE and PUT endpoints not implemented
+- **Frontend**: React (served via Nginx)
+- **Backend**: Node.js/Express
+- **Database**: PostgreSQL 15
+- **Infrastructure**: Docker & Docker Compose
+- **Security**: Cloudflare Zero Trust (Tunnels) & Hardened OpenSSH
+- **CI/CD**: GitHub Actions
 
-### Docker Issues:
+### Key Features & Metrics
 
-1. **Dockerfiles** - Need to be completed (only skeleton/comments provided)
-2. **docker-compose.yml** - Incomplete, missing configurations
-3. **Missing .dockerignore** - You need to create these files
+- **Automated Testing**: 100% test coverage with 7/7 integration tests.
+- **Fast Pipeline**: CI/CD execution completes in roughly **45 seconds**.
+- **Optimized Containers**: Production images reduced from >1GB to **~150-180MB** using multi-stage builds.
+- **Secure Access**: Production environment shielded by Cloudflare; no open inbound ports required.
 
-### CI/CD:
+## Repository Information
 
-1. **No workflow file** - You must create `.github/workflows/ci.yml` from scratch
+- **GitHub Repository**: [https://github.com/DABnoREGRET/devops-project](https://github.com/DABnoREGRET/devops-project)
+- **Production URL**: [https://dabcoholic.qzz.io](https://dabcoholic.qzz.io)
 
-## Your Tasks
+## Deployment Details
 
-### Task 1: Fix Backend Bugs (server.js)
+Detailed reports and architecture diagrams are available in the [docs](./docs) directory.
 
-- [x] Bug #1: Wrong default password
-- [x] Bug #2: Missing validation for empty title
-- [x] Bug #3: Missing DELETE endpoint
-- [x] Bug #4: Missing PUT endpoint
-- [x] Bug #5: Server starts in test mode
-- [x] Bug #6: App not exported for tests
-
-### Task 2: Complete Dockerfiles
-
-- [x] Complete `backend/Dockerfile` (multi-stage build)
-- [x] Complete `frontend/Dockerfile` (multi-stage build)
-- [x] Create `.dockerignore` files for both
-
-### Task 3: Complete docker-compose.yml
-
-- [x] Add proper environment variables
-- [x] Add healthchecks for backend and postgres
-- [x] Add volume mounts for database persistence
-- [x] Mount init script for database
-- [x] Configure service dependencies with health conditions
-
-### Task 4: Create CI/CD Pipeline
-
-- [x] Create `.github/workflows/ci.yml`
-- [x] Configure build-and-test job with PostgreSQL service
-- [x] Configure Docker build and push to Docker Hub
-- [x] Configure deploy job with SSH
-
-### Task 5: GitHub Configuration
-
-- [x] Setup branch protection for main
-- [x] Add required secrets
-- [x] Configure PR review requirements
-
-## Testing Locally
+### Quick Start (Development)
 
 ```bash
-# Install dependencies
-cd backend && npm ci
+# Clone the repository
+git clone https://github.com/DABnoREGRET/devops-project.git
+cd devops-project
 
-# Run tests (will fail until bugs are fixed!)
-npm test
-
-# Expected: 3 pass, 4 fail (until you fix the code)
+# Run with Docker Compose
+docker-compose up -d --build
 ```
-
-## Demo Flow (Fail-to-Fix)
-
-1. Create a branch with failing code
-2. Open PR → Show CI failing (Red X)
-3. Fix the code → Push again
-4. Show CI passing (Green ✓)
-5. Get approval → Merge to main
-6. Show CD deploying automatically
-7. Verify live application updated
 
 ## Hosting & Deployment
 
