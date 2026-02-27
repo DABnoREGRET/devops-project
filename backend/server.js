@@ -22,11 +22,37 @@ app.get('/health', (req, res) => {
 });
 
 // GET todos
-
+app.get('/api/todos', async (req, res) => {
+   try {
+      const result = await pool.query('SELECT * FROM todos ORDER BY id');
+      res.json(result.rows);
+   } catch (err) {
+      res.status(500).json({ error: err.message });
+   }
+});
 
 // BUG #2: Missing validation - will cause test to fail!
 // STUDENT TODO: Add validation to reject empty title
+app.post('/api/todos', async (req, res) => {
+   try {
+      const { title, completed = false } = req.body;
 
+      // STUDENT FIX: Add validation here!
+      // Hint: Check if title is empty or undefined
+      // Return 400 status with error message if invalid
+      if (!title || title.trim() === '') {
+         return res.status(400).json({ error: 'Title is required' });
+      }
+
+      const result = await pool.query(
+         'INSERT INTO todos(title, completed) VALUES($1, $2) RETURNING *',
+         [title, completed]
+      );
+      res.status(201).json(result.rows[0]);
+   } catch (err) {
+      res.status(500).json({ error: err.message });
+   }
+});
 
 // BUG #3: Missing DELETE endpoint - but test expects it!
 // STUDENT TODO: Implement DELETE /api/todos/:id endpoint
